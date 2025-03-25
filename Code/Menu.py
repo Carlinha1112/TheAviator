@@ -4,7 +4,7 @@ import pygame.display
 from pygame import Surface, Rect
 from pygame.font import Font
 
-from Code.Const import WIN_WIDTH, COLOR_BLUE, MENU_OPTION, COLOR_YELLOW
+from Code.Const import WIN_WIDTH, COLOR_BLUE, MENU_OPTION, COLOR_YELLOW, COLOR_WHITE
 
 
 class Menu:
@@ -21,7 +21,7 @@ class Menu:
             self.menu_text(100, "THE AVIATOR", COLOR_BLUE, ((WIN_WIDTH / 2), 275))
 
             for i in range(len(MENU_OPTION)):
-                self.menu_text(50, MENU_OPTION[i], COLOR_YELLOW, ((WIN_WIDTH / 2), 450 + 100 * i))
+                self.menu_text(50, MENU_OPTION[i], COLOR_WHITE, ((WIN_WIDTH / 2), 450 + 100 * i))
             pygame.display.flip()
 
             # Check for all events
