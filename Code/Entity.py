@@ -4,7 +4,7 @@ from abc import ABC, abstractmethod
 
 import pygame
 
-from Code.Const import ENTITY_HEALTH
+from Code.Const import ENTITY_HEALTH, ENTITY_SCORE
 
 
 class Entity(ABC):
@@ -15,6 +15,7 @@ class Entity(ABC):
         self.rect = self.surf.get_rect(left=position[0], top=position[1])
         self.speed = 0
         self.health = ENTITY_HEALTH[self.name]
+        self.score = ENTITY_SCORE[self.name]
     @abstractmethod
     def move(self, ):
         pass

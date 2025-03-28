@@ -7,7 +7,7 @@ import pygame
 from pygame import Surface, Rect
 from pygame.font import Font
 
-from Code.Const import COLOR_WHITE, WIN_HEIGHT, EVENT_ENEMY, SPAWN_TIME
+from Code.Const import C_WHITE, WIN_HEIGHT, EVENT_ENEMY, SPAWN_TIME, EVENT_COIN
 from Code.Entity import Entity
 from Code.EntityFactory import EntityFactory
 from Code.EntityMediator import EntityMediator
@@ -23,15 +23,19 @@ class Level:
         self.entity_list.append(EntityFactory.get_entity('Player'))
         self.timeout = 20000  # 20 segundos
         pygame.time.set_timer(EVENT_ENEMY, SPAWN_TIME)
+        pygame.time.set_timer(EVENT_COIN, SPAWN_TIME)
+
     def run(self):
         pygame.mixer_music.load(f'./asset/{self.name}.wav')
         pygame.mixer_music.play(-1)
         clock = pygame.time.Clock()
         while True:
-            clock.tick(40)
+            clock.tick(60)
             for ent in self.entity_list:
                 self.window.blit(source=ent.surf, dest=ent.rect)
                 ent.move()
+                if ent.name == 'Player':
+                    self.level_text(14, f'Player - Score: {ent.score}', C_WHITE, (10, 20))
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
@@ -39,11 +43,15 @@ class Level:
                 if event.type == EVENT_ENEMY:
                     choice = random.choice(('Enemy1Lv1', 'Enemy2Lv1', 'Enemy3Lv1'))
                     self.entity_list.append(EntityFactory.get_entity(choice))
+                if event.type == EVENT_COIN:
+                    choice = 'Coin'
+                    self.entity_list.append(EntityFactory.get_entity(choice))
+
 
             #  printed text
-            self.level_text(14, f'{self.name} - Timeout: {self.timeout / 1000 : .1f}s', COLOR_WHITE, (10, 5))
-            self.level_text(14, f'fps: {clock.get_fps():.0f}', COLOR_WHITE, (10, WIN_HEIGHT - 35))
-            self.level_text(14, f'entidades:{len(self.entity_list)}', COLOR_WHITE, (10, WIN_HEIGHT - 20))
+            self.level_text(14, f'{self.name} - Timeout: {self.timeout / 1000 : .1f}s', C_WHITE, (10, 5))
+            self.level_text(14, f'fps: {clock.get_fps():.0f}', C_WHITE, (10, WIN_HEIGHT - 35))
+            self.level_text(14, f'entidades:{len(self.entity_list)}', C_WHITE, (10, WIN_HEIGHT - 20))
             pygame.display.flip()
             EntityMediator.verify_collision(entity_list=self.entity_list)
             EntityMediator.verify_health(entity_list=self.entity_list)
